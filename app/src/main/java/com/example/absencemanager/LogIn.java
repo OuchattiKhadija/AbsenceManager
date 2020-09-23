@@ -10,11 +10,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class LogIn extends AppCompatActivity {
-    public String userIdMail , userIdPasswd;
-
     EditText mail,passwd;
     Button logIn;
     DataBaseHelper db ;
+    String sessionId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,9 +29,9 @@ public class LogIn extends AppCompatActivity {
                 String spasswd = passwd.getText().toString();
                 Boolean chkmailPass = db.chkMailPswd(smail,spasswd);
                 if (chkmailPass == true){
+                    sessionId = smail;
                     Toast.makeText(getApplicationContext(),"Sing In Successfully",Toast.LENGTH_SHORT).show();
-                    userIdMail = smail;
-                    userIdPasswd = spasswd;
+                    SendData();
                     login();
                 } else {
                     Toast.makeText(getApplicationContext(),"Wrong Email or Password",Toast.LENGTH_SHORT).show();
@@ -44,18 +43,18 @@ public class LogIn extends AppCompatActivity {
 
     public void login() {
         Intent intent = new Intent(this, Home.class);
+        intent.putExtra("EXTRA_SESSION_ID", sessionId);
         startActivity(intent);
+    }
+
+    public void SendData(){
+       // Intent intent = new Intent(this, AddClass.class);
+        // intent.putExtra("EXTRA_SESSION_ID", sessionId);
     }
 
     public void signUp(View view) {
         Intent intent = new Intent(this, SignUp.class);
         startActivity(intent);
     }
-
-    public void getUserId(){
-       String a = userIdMail;
-      String b = userIdPasswd;
-    }
-
 
 }

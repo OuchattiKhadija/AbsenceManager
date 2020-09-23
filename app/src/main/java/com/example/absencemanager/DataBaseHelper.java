@@ -8,17 +8,18 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+
 public class DataBaseHelper extends SQLiteOpenHelper {
     public DataBaseHelper(@Nullable Context context) {
-        super(context, "DbAbsence.db", null, 2);
+        super(context, "DbAbsence.db", null, 3);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("Create table user(id integer primary key AUTOINCREMENT NOT NULL ,email text NOT NULL, name text NOT NULL, etab text, passwd text NOT NULL)");
-        db.execSQL("Create table classe(id integer primary key AUTOINCREMENT NOT NULL,intitule text NOT NULL,fillier text NOT NULL, description text, user_id integer NOT NULL , FOREIGN KEY (user_id) REFERENCES user (id) )");
-        db.execSQL("Create table etudiant(id integer primary key AUTOINCREMENT NOT NULL,cne text NOT NULL,firstName text NOT NULL, lastName text, user_id integer,class_id integer , FOREIGN KEY (user_id) REFERENCES user (id),FOREIGN KEY (class_id) REFERENCES classe (id) )");
-        db.execSQL("Create table seance(id integer primary key AUTOINCREMENT NOT NULL,intitulé text NOT NULL,date date NOT NULL, timeStart datetime , timeEnd datetime, user_id integer,class_id integer , FOREIGN KEY (user_id) REFERENCES user (id),FOREIGN KEY (class_id) REFERENCES classe (id) )");
+        db.execSQL("Create table if not exists user (id integer primary key AUTOINCREMENT NOT NULL ,email text NOT NULL, name text NOT NULL, etab text, passwd text NOT NULL)");
+        db.execSQL("Create table if not exists classe(id integer primary key AUTOINCREMENT NOT NULL,intitule text NOT NULL,fillier text NOT NULL, description text, user_id integer , FOREIGN KEY (user_id) REFERENCES user (id) )");
+        db.execSQL("Create table if not exists etudiant(id integer primary key AUTOINCREMENT NOT NULL,cne text NOT NULL,firstName text NOT NULL, lastName text, user_id integer,class_id integer , FOREIGN KEY (user_id) REFERENCES user (id),FOREIGN KEY (class_id) REFERENCES classe (id) )");
+        db.execSQL("Create table if not exists seance(id integer primary key AUTOINCREMENT NOT NULL,intitulé text NOT NULL,date string NOT NULL, timeStart string , timeEnd string, user_id integer,class_id integer , FOREIGN KEY (user_id) REFERENCES user (id),FOREIGN KEY (class_id) REFERENCES classe (id) )");
     }
 
     @Override
@@ -66,17 +67,33 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         else return false;
 
     }
-    public boolean addClass(String intitule,String fillier , String description,int id_user){
+    public boolean addClass(String intitule,String fillier , String description,int isU){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("intitule",intitule);
         contentValues.put("fillier",fillier);
         contentValues.put("description",description);
-        contentValues.put("id_user",id_user);
+        contentValues.put("user_id",isU);
         long ins = db.insert("classe",null,contentValues);
         if (ins==-1) return false;
         else return true;
+    }
 
+    public Cursor getAllClasses(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("Select * from classe",null);
+        return res;
+    }
+
+    public int getUserId(String m ){
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT * FROM user WHERE email = ?";
+        String[] parameters = new String[] { m };
+        Cursor cursor = db.rawQuery(query, parameters);
+        if (cursor.moveToFirst())
+            return cursor.getInt(0);
+        else
+            return -1;
     }
 
 }

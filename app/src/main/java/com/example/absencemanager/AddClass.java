@@ -11,14 +11,14 @@ import android.widget.Toast;
 public class AddClass extends AppCompatActivity {
     EditText intitule,fillier,desc;
     DataBaseHelper db;
-    Cursor cursor;
-    int idUser;
+    String uId ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_class);
         setTitle("Ajouter nouvelle classe");
+        uId = getIntent().getStringExtra("EXTRA_SESSION_ID");
         db = new DataBaseHelper(this);
     }
 
@@ -30,6 +30,18 @@ public class AddClass extends AppCompatActivity {
         String sIntitule = intitule.getText().toString();
         String sFillier = fillier.getText().toString();
         String sDesc = desc.getText().toString();
+        int idUser = db.getUserId(uId);
+        if(sIntitule.equals("")|| sFillier.equals("")){
+            Toast.makeText(getApplicationContext(),"intitulé and fillier are requered",Toast.LENGTH_SHORT).show();
+        }else{
+            Boolean addClass = db.addClass(sIntitule,sFillier,sDesc,idUser);
+            if (addClass == true){
+                Toast.makeText(getApplicationContext(),"Registered Successfully",Toast.LENGTH_SHORT).show();
+                toListClasses();
+            } else {
+                Toast.makeText(getApplicationContext(),"Some thing wrong try agan",Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void toListClasses() {
