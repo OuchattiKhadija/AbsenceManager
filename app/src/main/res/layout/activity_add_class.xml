@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddClass"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:layout_marginTop="30dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#2CA7E0"
+            android:textStyle="bold"
+            android:fontFamily="monospace"
+            android:textSize="19sp"
+            android:text="Intitulé"/>
+        <EditText
+            android:id="@+id/intitule"
+            android:layout_width="0dp"
+            android:textSize="19sp"
+            android:fontFamily="monospace"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:hint="exemple SIM1"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#2CA7E0"
+            android:textStyle="bold"
+            android:fontFamily="monospace"
+            android:textSize="19sp"
+            android:text="Filliére"/>
+        <EditText
+            android:id="@+id/fillier"
+            android:layout_width="0dp"
+            android:textSize="19sp"
+            android:fontFamily="monospace"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:hint="Math informatique"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#2CA7E0"
+            android:textStyle="bold"
+            android:fontFamily="monospace"
+            android:textSize="19sp"
+            android:text="Description"/>
+
+        <EditText
+            android:id="@+id/description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:textSize="19sp"
+            android:fontFamily="monospace"
+            android:ems="10"
+            android:minLines="4"
+            android:gravity="start|top"
+            android:inputType="textMultiLine" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="122dp"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/saveClass"
+            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button"
+            android:text="Save Classe"
+            android:textColor="#fff"
+            android:onClick="saveClass"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
