@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
     public DataBaseHelper(@Nullable Context context) {
-        super(context, "DbAbsence.db", null, 3);
+        super(context, "DbAbsence.db", null, 4);
     }
 
     @Override
@@ -19,7 +19,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL("Create table if not exists user (id integer primary key AUTOINCREMENT NOT NULL ,email text NOT NULL, name text NOT NULL, etab text, passwd text NOT NULL)");
         db.execSQL("Create table if not exists classe(id integer primary key AUTOINCREMENT NOT NULL,intitule text NOT NULL,fillier text NOT NULL, description text, user_id integer , FOREIGN KEY (user_id) REFERENCES user (id) )");
         db.execSQL("Create table if not exists etudiant(id integer primary key AUTOINCREMENT NOT NULL,cne text NOT NULL,firstName text NOT NULL, lastName text, user_id integer,class_id integer , FOREIGN KEY (user_id) REFERENCES user (id),FOREIGN KEY (class_id) REFERENCES classe (id) )");
-        db.execSQL("Create table if not exists seance(id integer primary key AUTOINCREMENT NOT NULL,intitulé text NOT NULL,date string NOT NULL, timeStart string , timeEnd string, user_id integer,class_id integer , FOREIGN KEY (user_id) REFERENCES user (id),FOREIGN KEY (class_id) REFERENCES classe (id) )");
+        db.execSQL("Create table if not exists seance(id integer primary key AUTOINCREMENT NOT NULL,SeanceModu text NOT NULL,date string NOT NULL, timeStart string , timeEnd string, user_id integer,class_id integer , FOREIGN KEY (user_id) REFERENCES user (id),FOREIGN KEY (class_id) REFERENCES classe (id) )");
+        db.execSQL("Create table if not exists absence(id integer primary key AUTOINCREMENT NOT NULL,etudiant_id integer,class_id integer , FOREIGN KEY (etudiant_id) REFERENCES etudiant (id),FOREIGN KEY (class_id) REFERENCES classe (id) )");
     }
 
     @Override
@@ -28,6 +29,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL("drop table if exists classe");
         db.execSQL("drop table if exists etudiant");
         db.execSQL("drop table if exists seance");
+        db.execSQL("drop table if exists absence");
         onCreate(db);
     }
 
@@ -79,12 +81,28 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         else return true;
     }
 
-    public Cursor getAllClasses(){
+    public Cursor getAllClasses(int id){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("Select * from classe ",null);
+        String query="Select * from classe where user_id ="+id;
+        Cursor res = db.rawQuery(query,null);
+        if(res!=null){
+            res.moveToFirst();}
         return res;
     }
 
+    public boolean addSeance(String SmodU,String dt , String timeS,String timeE,int isU,int claU){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("SeanceModu",SmodU);
+        contentValues.put("date",dt);
+        contentValues.put("timeStart",timeS);
+        contentValues.put("timeEnd",timeE);
+        contentValues.put("user_id",isU);
+        contentValues.put("class_id",claU);
+        long ins = db.insert("seance",null,contentValues);
+        if (ins==-1) return false;
+        else return true;
+    }
     public int getUserId(String m ){
         SQLiteDatabase db = getReadableDatabase();
         String query = "SELECT * FROM user WHERE email = ?";

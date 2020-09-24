@@ -19,13 +19,15 @@ import java.util.ArrayList;
 public class CustomAdapterClasses extends RecyclerView.Adapter<CustomAdapterClasses.MyViewHolder> {
     private Context context;
     private Activity activity;
-    private ArrayList classIntitule,classFiller;
+    private ArrayList classIntitule,classFiller,class_id,user_id;
 
-    CustomAdapterClasses(Activity activity, Context context,ArrayList classIntitule,ArrayList classFiller){
+    CustomAdapterClasses(Activity activity, Context context,ArrayList class_id,ArrayList classIntitule,ArrayList classFiller,ArrayList user_id){
         this.activity = activity;
         this.context = context;
+        this.class_id = class_id;
         this.classFiller = classFiller;
         this.classIntitule = classIntitule;
+        this.user_id = user_id;
     }
     @NonNull
     @Override
@@ -36,27 +38,25 @@ public class CustomAdapterClasses extends RecyclerView.Adapter<CustomAdapterClas
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CustomAdapterClasses.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CustomAdapterClasses.MyViewHolder holder,final int position) {
         holder.class_intitule.setText(String.valueOf(classIntitule.get(position)));
         holder.classFilier.setText(String.valueOf(classFiller.get(position)));
         //Recyclerview onClickListener
-        /**holder.mainLayout.setOnClickListener(new View.OnClickListener() {
+        holder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, UpdateActivity.class);
-                intent.putExtra("id", String.valueOf(book_id.get(position)));
-                intent.putExtra("title", String.valueOf(book_title.get(position)));
-                intent.putExtra("author", String.valueOf(book_author.get(position)));
-                intent.putExtra("pages", String.valueOf(book_pages.get(position)));
+                Intent intent = new Intent(context, Seance.class);
+                intent.putExtra("idC", String.valueOf(class_id.get(position)));
+                intent.putExtra("idU", String.valueOf(user_id.get(position)));
                 activity.startActivityForResult(intent, 1);
             }
-        });**/
+        });
 
     }
 
     @Override
     public int getItemCount() {
-        return classIntitule.size();
+        return user_id.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
@@ -70,8 +70,8 @@ public class CustomAdapterClasses extends RecyclerView.Adapter<CustomAdapterClas
             classFilier = itemView.findViewById(R.id.filierClass);
             mainLayout = itemView.findViewById(R.id.mainLayout);
             //Animate Recyclerview
-          //  Animation translate_anim = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
-            //mainLayout.setAnimation(translate_anim);
+          Animation translate_anim = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
+          mainLayout.setAnimation(translate_anim);
         }
 
     }

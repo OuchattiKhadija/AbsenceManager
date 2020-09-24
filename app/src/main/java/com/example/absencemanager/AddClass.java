@@ -36,7 +36,6 @@ public class AddClass extends AppCompatActivity {
         }else{
             Boolean addClass = db.addClass(sIntitule,sFillier,sDesc,idUser);
             if (addClass == true){
-                Toast.makeText(getApplicationContext(),"Registered Successfully",Toast.LENGTH_SHORT).show();
                 toListClasses();
             } else {
                 Toast.makeText(getApplicationContext(),"Some thing wrong try agan",Toast.LENGTH_SHORT).show();
