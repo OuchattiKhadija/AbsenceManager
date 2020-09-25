@@ -9,6 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Student">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Seance" />
+        </activity>
         <activity android:name=".AddSeance">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

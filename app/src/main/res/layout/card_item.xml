@@ -60,7 +60,6 @@
                     android:layout_margin="5dp"
                     android:text="Edit Student"
                     android:textColor="#FFFFFFFF"
-                    android:textFontWeight="bold"
                     android:elevation="5dp"
                     android:background="@color/colorPrimaryDark"/>
                 <Button
@@ -70,7 +69,6 @@
                     android:layout_weight="1"
                     android:elevation="5dp"
                     android:textColor="#FFFFFFFF"
-                    android:textFontWeight="bold"
                     android:layout_margin="5dp"
                     android:background="@color/colorPrimaryDark"
                     android:text="Edit Seances"/>

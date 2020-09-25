@@ -11,14 +11,14 @@ import androidx.annotation.Nullable;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
     public DataBaseHelper(@Nullable Context context) {
-        super(context, "DbAbsence.db", null, 4);
+        super(context, "DbAbsence.db", null, 5);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("Create table if not exists user (id integer primary key AUTOINCREMENT NOT NULL ,email text NOT NULL, name text NOT NULL, etab text, passwd text NOT NULL)");
         db.execSQL("Create table if not exists classe(id integer primary key AUTOINCREMENT NOT NULL,intitule text NOT NULL,fillier text NOT NULL, description text, user_id integer , FOREIGN KEY (user_id) REFERENCES user (id) )");
-        db.execSQL("Create table if not exists etudiant(id integer primary key AUTOINCREMENT NOT NULL,cne text NOT NULL,firstName text NOT NULL, lastName text, user_id integer,class_id integer , FOREIGN KEY (user_id) REFERENCES user (id),FOREIGN KEY (class_id) REFERENCES classe (id) )");
+        db.execSQL("Create table if not exists etudiant(id integer primary key NOT NULL,cne text NOT NULL,firstName text NOT NULL, lastName text, user_id integer,class_id integer , FOREIGN KEY (user_id) REFERENCES user (id),FOREIGN KEY (class_id) REFERENCES classe (id) )");
         db.execSQL("Create table if not exists seance(id integer primary key AUTOINCREMENT NOT NULL,SeanceModu text NOT NULL,date string NOT NULL, timeStart string , timeEnd string, user_id integer,class_id integer , FOREIGN KEY (user_id) REFERENCES user (id),FOREIGN KEY (class_id) REFERENCES classe (id) )");
         db.execSQL("Create table if not exists absence(id integer primary key AUTOINCREMENT NOT NULL,etudiant_id integer,class_id integer , FOREIGN KEY (etudiant_id) REFERENCES etudiant (id),FOREIGN KEY (class_id) REFERENCES classe (id) )");
     }
@@ -85,8 +85,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         String query="Select * from classe where user_id ="+id;
         Cursor res = db.rawQuery(query,null);
-        if(res!=null){
-            res.moveToFirst();}
         return res;
     }
 
@@ -103,6 +101,34 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         if (ins==-1) return false;
         else return true;
     }
+
+    public Cursor getAllSeance(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query="Select * from seance where class_id ="+id;
+        Cursor res = db.rawQuery(query,null);
+        return res;
+    }
+
+    public boolean addStudent(int id ,String cne,String firstname , String lastname,int claU){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("id",id);
+        contentValues.put("cne",cne);
+        contentValues.put("firstName",firstname);
+        contentValues.put("lastName",lastname);
+        contentValues.put("class_id",claU);
+        long ins = db.insert("etudiant",null,contentValues);
+        if (ins==-1) return false;
+        else return true;
+    }
+
+    public Cursor getAllStudent(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query="Select * from etudiant where class_id ="+id;
+        Cursor res = db.rawQuery(query,null);
+        return res;
+    }
+
     public int getUserId(String m ){
         SQLiteDatabase db = getReadableDatabase();
         String query = "SELECT * FROM user WHERE email = ?";

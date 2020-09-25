@@ -29,6 +29,7 @@ public class CustomAdapterClasses extends RecyclerView.Adapter<CustomAdapterClas
         this.classIntitule = classIntitule;
         this.user_id = user_id;
     }
+
     @NonNull
     @Override
     public CustomAdapterClasses.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
